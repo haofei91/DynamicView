@@ -10,6 +10,10 @@ import com.benny.library.dynamicview.parser.property.NodeProperties;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 容器类布局
+ * 表示此节点为容器，可包含子节点，参照LinearLayout、RelativeLayout等
+ */
 public class DynamicGroupViewNode extends DynamicViewNode {
     private List<DynamicViewNode> children = new ArrayList<>();
 

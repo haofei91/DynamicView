@@ -12,6 +12,9 @@ import com.benny.library.dynamicview.util.ViewIdGenerator;
 
 import java.io.StringReader;
 
+/**
+ * XML的解析器，转化为DynamicViewNode 节点树
+ */
 public class XMLLayoutParser {
     private XmlPullParser parser;
     private SerialNumberHandler serialNumberHandler;
@@ -27,6 +30,9 @@ public class XMLLayoutParser {
         }
     }
 
+    /**
+     * 解析文档
+     */
     public synchronized DynamicViewTree parseDocument(String xml) throws Exception {
         ViewIdGenerator viewIdGenerator = new ViewIdGenerator();
 
@@ -40,6 +46,7 @@ public class XMLLayoutParser {
                 }
                 currentNode = viewNode;
 
+                //判断缓存
                 if (viewNode.isRoot()) {
                     String serialNumber = viewNode.getProperty("sn");
                     if (TextUtils.isEmpty(serialNumber)) {
@@ -61,12 +68,17 @@ public class XMLLayoutParser {
         return new DynamicViewTree(currentNode);
     }
 
+    //构建节点
     private DynamicViewNode parseNode(XmlPullParser parser, ViewIdGenerator viewIdGenerator) throws Exception {
         String className = parser.getName();
         NodeProperties properties = parseAttributes(parser, viewIdGenerator);
+
+        //1. 获取 对应节点的DynamicViewBuilder Class
+        //2.  根据具体的节点名称 Hbox，生成节点DynamicViewNode，赋值属性
         return DynamicNodeFactory.create(className, properties);
     }
 
+    //解析节点的属性
     private NodeProperties parseAttributes(XmlPullParser parser, ViewIdGenerator viewIdGenerator) {
         NodeProperties properties = new NodeProperties(viewIdGenerator);
         int attrCount = parser.getAttributeCount();
@@ -76,6 +88,10 @@ public class XMLLayoutParser {
         return properties;
     }
 
+
+    /**
+     * 缓存获取手柄
+     */
     public interface SerialNumberHandler {
         DynamicViewTree onReceive(String serialNumber);
     }

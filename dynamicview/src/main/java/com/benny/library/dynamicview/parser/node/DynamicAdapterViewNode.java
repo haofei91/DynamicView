@@ -12,6 +12,10 @@ import com.benny.library.dynamicview.parser.property.NodeProperties;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 复用型布局
+ * 此节点只能有一个子节点，根据数据来决定生成多少子view，参照ListView、RecyclerView等
+ */
 public class DynamicAdapterViewNode extends DynamicViewNode {
     private List<DynamicViewNode> children = new ArrayList<>();
 

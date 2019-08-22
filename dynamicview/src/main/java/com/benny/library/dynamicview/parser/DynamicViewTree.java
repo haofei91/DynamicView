@@ -13,8 +13,15 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+/**
+ * 节点树
+ * 1. 生成view
+ * 2. 绑定数据
+ * 3. 绑定事件
+ */
 public class DynamicViewTree implements ViewInflater {
     private static final int KEY_BINDERS = 1 + 2 << 24;
+
     private DynamicViewNode root;
 
     public DynamicViewTree(DynamicViewNode root) {
@@ -25,6 +32,9 @@ public class DynamicViewTree implements ViewInflater {
         return root;
     }
 
+    /**
+     * 构建 ui视图
+     */
     public View inflate(Context context, ViewGroup parent) throws Exception {
         ViewBinder viewBinder = new ViewBinder();
         View contentView = root.createView(context, parent, viewBinder);
@@ -32,17 +42,9 @@ public class DynamicViewTree implements ViewInflater {
         return contentView;
     }
 
-    public static void setActionProcessor(View view, ActionProcessor processor) {
-        try {
-            ViewBinder viewBinder = (ViewBinder) view.getTag(KEY_BINDERS);
-            if (viewBinder != null) {
-                viewBinder.setActionProcessor(processor);
-            }
-        }
-        catch (Exception ignored) {
-        }
-    }
-
+    /**
+     * 绑定数据
+     */
     public static void bindView(View view, JSONObject data) {
         try {
             ViewBinder viewBinder = (ViewBinder) view.getTag(KEY_BINDERS);
@@ -64,4 +66,19 @@ public class DynamicViewTree implements ViewInflater {
         catch (Exception ignored) {
         }
     }
+
+    /**
+     * 绑定事件
+     */
+    public static void setActionProcessor(View view, ActionProcessor processor) {
+        try {
+            ViewBinder viewBinder = (ViewBinder) view.getTag(KEY_BINDERS);
+            if (viewBinder != null) {
+                viewBinder.setActionProcessor(processor);
+            }
+        }
+        catch (Exception ignored) {
+        }
+    }
+
 }

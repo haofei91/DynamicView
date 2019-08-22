@@ -13,6 +13,10 @@ import com.benny.library.dynamicview.view.setter.RelativeSetter;
 import com.benny.library.dynamicview.view.setter.SizeSetter;
 import com.benny.library.dynamicview.view.setter.WeightSetter;
 
+/**
+ * 1. 构造视图
+ * 2. 内部持有视图，并提供外部接口： 设置属性、点击事件
+ */
 public abstract class DynamicViewBuilder {
     protected View view;
     private RelativeSetter relativeSetter = new RelativeSetter();
@@ -25,12 +29,21 @@ public abstract class DynamicViewBuilder {
 
     private OnClickActionSetter onClickActionSetter = new OnClickActionSetter();
 
+    /************************  构建 视图 ********************************/
     abstract public void createView(Context context);
 
     public View getView() {
         return view;
     }
 
+    /************************  绑定属性 ********************************/
+
+    /**
+     * 定义了一些公共的，自定义的在编译期继承该类实现
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean setProperty(String key, String value) {
         switch (key) {
             case "id":
@@ -63,6 +76,7 @@ public abstract class DynamicViewBuilder {
         return false;
     }
 
+    /************************  绑定事件 ********************************/
     public boolean setAction(String key, String value, ActionProcessor processor) {
         switch (key) {
             case OnClickActionSetter.PROPERTY:

@@ -13,24 +13,24 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewBinder {
+
+    /**
+     * 存储 视图构造器 和 属性 的关联关系。。。。需要在绑定数据时使用
+     * @param builder
+     * @param properties
+     */
+
     private List<Pair<DynamicViewBuilder, NodeProperties>> pairs = new ArrayList<>();
-    private ActionProcessorWrapper actionProcessorWrapper = new ActionProcessorWrapper();
 
     public void add(DynamicViewBuilder builder, NodeProperties properties) {
         pairs.add(Pair.create(builder, properties));
     }
 
-    public void bind(JSONObject data) {
-        for (Pair<DynamicViewBuilder, NodeProperties> pair : pairs) {
-            pair.second.set(pair.first, actionProcessorWrapper, data);
-        }
-    }
+    /**
+     * 事件处理
+     */
 
-    public void bind(Map<String, String> data) {
-        for (Pair<DynamicViewBuilder, NodeProperties> pair : pairs) {
-            pair.second.set(pair.first, actionProcessorWrapper, data);
-        }
-    }
+    private ActionProcessorWrapper actionProcessorWrapper = new ActionProcessorWrapper();
 
     public void setActionProcessor(ActionProcessor processor) {
         actionProcessorWrapper.setProcessor(processor);
@@ -54,4 +54,26 @@ public class ViewBinder {
             }
         }
     }
+
+
+
+    /**
+     * 绑定动态数据，为控件属性赋值
+     * @param data
+     */
+    public void bind(JSONObject data) {
+        for (Pair<DynamicViewBuilder, NodeProperties> pair : pairs) {
+            pair.second.set(pair.first, actionProcessorWrapper, data);
+        }
+    }
+
+    public void bind(Map<String, String> data) {
+        for (Pair<DynamicViewBuilder, NodeProperties> pair : pairs) {
+            pair.second.set(pair.first, actionProcessorWrapper, data);
+        }
+    }
+
+
+
+
 }
